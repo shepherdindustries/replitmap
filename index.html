@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USPS Zone Map Tool</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <script>var getFromZip,getToZip;function getValueFrom(){var e=document.getElementById("fromZip").value;/(^\d{5}$)/.test(e)&&(getFromZip=e,fromZip(),checkZone())}function getValueTo(){var e=document.getElementById("toZip").value;""==e?document.getElementById("zoneInfoWrap").style.display="none":/(^\d{5}$)/.test(e)&&(getToZip=e,fromZip(),toZip(),checkZone())}function fromZip(){var e=new XMLHttpRequest;e.onreadystatechange=function(){4==this.readyState&&200==this.status&&getFrom(this)},e.open("GET",'https://secure.shippingapis.com/ShippingAPI.dll?API=CityStateLookup&XML=<CityStateLookupRequest USERID="364SIMPL0013"><ZipCode ID="1"><Zip5>'+getFromZip+"</Zip5></ZipCode></CityStateLookupRequest>",!0),e.send(),imgMap="https://images.simplfulfillment.com/file/usps-images/"+getFromZip.substring(0,3)+".png",document.getElementById("zoneMapImage").setAttribute("src",imgMap)}function getFrom(e){var t=e.responseXML;let n=t.getElementsByTagName("City");e=t.getElementsByTagName("State");let o=t.getElementsByTagName("Description");"undefined"==o[0]||0==o.length?(n=n[0].textContent.charAt(0).toUpperCase()+n[0].textContent.substr(1).toLowerCase(),e=e[0].textContent,document.getElementById("fromCS").innerHTML=n+", "+e+" to "):(o=o[0].textContent,document.getElementById("toast-message").innerHTML=o,document.getElementById("alert-wrap").style.display="block",setTimeout(function(){document.getElementById("alert-wrap").style.display="none"},3e3))}function toZip(){var e=new XMLHttpRequest;e.onreadystatechange=function(){4==this.readyState&&200==this.status&&getTo(this)},e.open("GET",'https://secure.shippingapis.com/ShippingAPI.dll?API=CityStateLookup&XML=<CityStateLookupRequest USERID="364SIMPL0013"><ZipCode ID="1"><Zip5>'+getToZip+"</Zip5></ZipCode></CityStateLookupRequest>",!0),e.send(),document.getElementById("zoneInfoWrap").style.display="block"}function getTo(e){var t=e.responseXML;let n=t.getElementsByTagName("City");e=t.getElementsByTagName("State");let o=t.getElementsByTagName("Description");"undefined"==o[0]||0==o.length?(n=n[0].textContent.charAt(0).toUpperCase()+n[0].textContent.substr(1).toLowerCase(),e=e[0].textContent,document.getElementById("toCS").innerHTML=n+", "+e):(o=o[0].textContent,document.getElementById("toast-message").innerHTML=o,document.getElementById("alert-wrap").style.display="block",document.getElementById("zoneInfoWrap").style.display="none",setTimeout(function(){document.getElementById("alert-wrap").style.display="none"},3e3))}function checkZone(){var e=new XMLHttpRequest;e.onreadystatechange=function(){var e;4==this.readyState&&200==this.status&&(e=this.responseXML.getElementsByTagName("Zone")[0].textContent,document.getElementById("zone").innerHTML=" Zone "+e)},e.open("GET","https://secure.shippingapis.com/ShippingAPI.dll?API=RateV4&XML=%3CRateV4Request%20USERID=%22751JOSHU0578%22%3E%3CRevision%3E2%3C/Revision%3E%3CPackage%20ID=%221ST%22%3E%3CService%3EFirst%20Class%20Commercial%3C/Service%3E%3CFirstClassMailType%3EParcel%3C/FirstClassMailType%3E%3CZipOrigination%3E"+getFromZip+"%3C/ZipOrigination%3E%3CZipDestination%3E"+getToZip+"%3C/ZipDestination%3E%3CPounds%3E0%3C/Pounds%3E%3COunces%3E3%3C/Ounces%3E%3CContainer%3ERectangular%3C/Container%3E%3CSize%3EVariable%3C/Size%3E%3CMachinable%3Etrue%3C/Machinable%3E%3C/Package%3E%3C/RateV4Request%3E",!0),e.send()}</script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<style>.head-tittle-wrap{padding:2rem;margin-bottom:2rem;background-color:#eceeef;border-radius:.3rem}#zoneInfoWrap{display:none}.zone-info h2{font-size:4.5rem;font-weight:300;line-height:1.1}.zone-info h3{color:gray}.slide{-webkit-animation:slide 1s ease;animation:slide 1s ease}@-webkit-keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(0)}}@keyframes slide{0%{transform:translateX(-100%)}100%{transform:translateX(0)}}#alert-wrap{position:fixed;top:0;right:0;width:100%;display:none}.alert{position:relative;background-color:#001571;pointer-events:auto;overflow:hidden;padding:15px 15px 15px 50px;width:300px;margin:0 auto;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;background-position:15px center;background-repeat:no-repeat;-moz-box-shadow:0 0 12px #999;-webkit-box-shadow:0 0 12px #999;box-shadow:0 0 12px #999;color:#fff;opacity:.8;font-size:14px}.alert{-moz-box-shadow:0 0 12px #000;-webkit-box-shadow:0 0 12px #000;box-shadow:0 0 12px #000;opacity:1;cursor:pointer}.closebtn{margin-left:15px;color:#fff;font-weight:700;float:right;font-size:22px;line-height:20px;cursor:pointer;transition:.3s}</style>
+</head>
+<body>
+    <div class="wrraper">
+        <div class="zone">
+            <div class="container">
+                <div class="row align-items-center position-relative pb-4">
+                    <div class="col-md-2">
+                        <h2>From (zip code)</h2>
+                        <div><input onkeyup="getValueFrom()" maxlength="5" type="tel" id="fromZip"
+                                class="form-control"></div>
+                    </div>
+                    <div class="col-md-2">
+                        <h2>To (zip code)</h2>
+                        <div><input onkeyup="getValueTo()" maxlength="5" type="tel"
+                                id="toZip" class="form-control"></div>
+                    </div>
+                    <div class="col-md-8">
+                        <div id="zoneInfoWrap">
+                            <div class="zone-info slide ps-5">
+                                <h2> <span id="zone"></span></h2>
+                                <h3>
+                                    <span id="fromCS"></span><span id="toCS"></span>
+                                </h3>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 zone-map-image text-center">
+                        <img id="zoneMapImage" src="https://images.simplfulfillment.com/file/usps-images/061.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="alert-wrap">
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.parentElement.style.display='none';">&times;</span>
+                <div id="toast-message"></div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>
